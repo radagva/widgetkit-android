@@ -15,14 +15,14 @@ object UpdateInstaller {
     class CancelledException : IOException("Cancelled")
 
     /**
-     * Blocking. [onProgress] receives 0..100, or -1 when the size is unknown.
+     * Blocking. [onProgress] receives bytes downloaded and the total (-1 when unknown).
      * On commit, the system shows its install confirmation (via [InstallResultReceiver]).
      */
     fun downloadAndInstall(
         context: Context,
         release: AppRelease,
         isCancelled: () -> Boolean,
-        onProgress: (Int) -> Unit,
+        onProgress: (downloaded: Long, total: Long) -> Unit,
     ) {
         val installer = context.packageManager.packageInstaller
         val params = PackageInstaller.SessionParams(PackageInstaller.SessionParams.MODE_FULL_INSTALL).apply {
@@ -46,16 +46,18 @@ object UpdateInstaller {
                     val buffer = ByteArray(64 * 1024)
                     var written = 0L
                     var lastPercent = -2
+                    onProgress(0, total)
                     while (true) {
                         if (isCancelled()) throw CancelledException()
                         val read = input.read(buffer)
                         if (read < 0) break
                         output.write(buffer, 0, read)
                         written += read
-                        val percent = if (total > 0) (written * 100 / total).toInt() else -1
+                        // Report at most once per percent (or every 64 KB when the size is unknown).
+                        val percent = if (total > 0) (written * 100 / total).toInt() else (written / 65_536).toInt()
                         if (percent != lastPercent) {
                             lastPercent = percent
-                            onProgress(percent)
+                            onProgress(written, total)
                         }
                     }
                     session.fsync(output)

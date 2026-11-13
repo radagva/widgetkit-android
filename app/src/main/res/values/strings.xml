@@ -47,12 +47,19 @@
 
     <!-- In-app update -->
     <string name="update_title">Update available</string>
-    <string name="update_message">WidgetKit %1$s is available. You have %2$s.</string>
-    <string name="update_size">Download size: %s</string>
+    <string name="update_version">WidgetKit %s</string>
+    <string name="update_installed">You have %s</string>
+    <string name="update_downloading_title">Downloading update</string>
+    <string name="update_connecting">Connecting…</string>
+    <string name="update_progress">%1$d%% · %2$s of %3$s</string>
+    <string name="update_installing_title">Ready to install</string>
+    <string name="update_installing">Opening the installer…</string>
+    <string name="update_failed_title">Update failed</string>
+    <string name="update_close">Close</string>
+    <string name="update_retry">Try again</string>
     <string name="update_accept">Update</string>
-    <string name="update_later">Later</string>
-    <string name="update_downloading">Downloading WidgetKit %s…</string>
-    <string name="update_failed">Update failed. Try again later.</string>
+    <string name="update_later">Not now</string>
+    <string name="update_failed">Couldn\'t download the update. Check your connection and try again.</string>
     <string name="update_failed_signature">Can\'t update over this build. Uninstall WidgetKit, then install the new version.</string>
     <string name="update_permission_title">Allow installing updates</string>
     <string name="update_permission_message">To install updates, allow WidgetKit to install apps in the next screen, then come back.</string>

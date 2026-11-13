@@ -45,4 +45,10 @@
         <item name="android:textColor">@color/app_secondary_label</item>
         <item name="android:textSize">13sp</item>
     </style>
+
+    <!-- Rounded app icon in the update sheet. -->
+    <style name="UpdateSheetIconShape">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">18dp</item>
+    </style>
 </resources>

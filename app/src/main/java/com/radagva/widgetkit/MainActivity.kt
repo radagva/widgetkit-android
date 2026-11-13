@@ -43,6 +43,7 @@ import com.radagva.widgetkit.theme.ColorScheme
 import com.radagva.widgetkit.theme.WidgetSettings
 import com.radagva.widgetkit.theme.WidgetTheme
 import com.radagva.widgetkit.update.AppUpdater
+import com.radagva.widgetkit.update.UpdateChecker
 
 /** Settings screen: one section per widget family, each with live previews and a color scheme. */
 class MainActivity : AppCompatActivity() {
@@ -364,8 +365,19 @@ class MainActivity : AppCompatActivity() {
 
     private fun showAppVersion() {
         val info = packageManager.getPackageInfo(packageName, 0)
+        val version = info.versionName.orEmpty()
         findViewById<TextView>(R.id.app_version).text =
-            getString(R.string.settings_version, info.versionName, PackageInfoCompat.getLongVersionCode(info))
+            getString(R.string.settings_version, version, PackageInfoCompat.getLongVersionCode(info))
+        findViewById<View>(R.id.share_version).setOnClickListener { shareDownloadLink(version) }
+    }
+
+    /** Shares the GitHub download link of the installed version. */
+    private fun shareDownloadLink(version: String) {
+        val send = Intent(Intent.ACTION_SEND)
+            .setType("text/plain")
+            .putExtra(Intent.EXTRA_SUBJECT, "WidgetKit $version")
+            .putExtra(Intent.EXTRA_TEXT, getString(R.string.settings_share_text, version, UpdateChecker.downloadUrl(version)))
+        startActivity(Intent.createChooser(send, getString(R.string.settings_share_version)))
     }
 
     private fun dp(value: Int) = (value * resources.displayMetrics.density).toInt()

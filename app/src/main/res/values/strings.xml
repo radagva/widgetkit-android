@@ -61,6 +61,8 @@
     <!-- Settings app -->
     <string name="settings_title">Widgets</string>
     <string name="settings_version">WidgetKit %1$s (%2$d)</string>
+    <string name="settings_share_version">Share download link</string>
+    <string name="settings_share_text">WidgetKit %1$s for Android: %2$s</string>
     <string name="settings_section_calendar">CALENDAR WIDGET</string>
     <string name="settings_section_scheme">COLOR SCHEME</string>
     <string name="settings_section_access">CALENDAR ACCESS</string>

@@ -15,6 +15,10 @@ object UpdateChecker {
 
     /** Repository the release workflow publishes to. */
     private const val REPO = "radagva/widgetkit-android"
+
+    /** Direct APK link of a release, as published by the release workflow (tag = version). */
+    fun downloadUrl(version: String): String =
+        "https://github.com/$REPO/releases/download/$version/WidgetKit-$version.apk"
     private const val TIMEOUT_MS = 8_000
 
     /** Latest published release with an APK asset, or null on any failure. Blocking. */

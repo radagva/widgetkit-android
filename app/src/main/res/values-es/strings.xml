@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Spanish (all regions). Any other device language falls back to English (values/strings.xml). -->
+<resources>
+    <string name="app_name">WidgetKit</string>
+
+    <string name="calendar_widget_label">Calendario</string>
+    <string name="calendar_widget_description">El mes y los eventos de hoy de un vistazo.</string>
+    <string name="calendar_widget_no_events">No hay más eventos hoy</string>
+    <string name="calendar_widget_grant_access">Toca para permitir el acceso al calendario</string>
+    <string name="calendar_widget_all_day">Todo el día</string>
+    <string name="calendar_widget_untitled">(Sin título)</string>
+    <string name="calendar_widget_previous_month">Mes anterior</string>
+    <string name="calendar_widget_next_month">Mes siguiente</string>
+    <plurals name="calendar_widget_more_events">
+        <item quantity="one">%d evento más</item>
+        <item quantity="many">%d eventos más</item>
+        <item quantity="other">%d eventos más</item>
+    </plurals>
+
+    <!-- Currency widgets -->
+    <string name="currency_usd_widget_label">Dólar</string>
+    <string name="currency_eur_widget_label">Euro</string>
+    <string name="currency_both_widget_label">Dólar y Euro</string>
+    <string name="currency_usd_widget_description">Tasas oficial y paralela del dólar.</string>
+    <string name="currency_eur_widget_description">Tasas oficial y paralela del euro.</string>
+    <string name="currency_both_widget_description">Tasas del dólar y del euro, lado a lado.</string>
+    <string name="currency_usd_title">DÓLAR</string>
+    <string name="currency_eur_title">EURO</string>
+    <string name="currency_bolivares">Bs. %s</string>
+    <string name="currency_buy_sell">Compra %1$s · Venta %2$s</string>
+    <string name="currency_updated">Actualizado %s</string>
+    <string name="currency_refresh">Actualizar</string>
+    <string name="currency_retry">Reintentar</string>
+    <string name="currency_error_no_connection">Sin conexión</string>
+    <string name="currency_error_not_available">No disponible</string>
+    <string name="currency_error_parse">No se pudieron leer los datos</string>
+
+    <!-- Calculator -->
+    <string name="calculator_title_usd">Dólar</string>
+    <string name="calculator_title_eur">Euro</string>
+    <string name="calculator_back">Widgets</string>
+    <string name="calculator_hint">1</string>
+    <string name="calculator_section_amount">MONTO</string>
+    <string name="calculator_section_result">EN BOLÍVARES</string>
+    <string name="calculator_rate">1 %1$s = %2$s</string>
+    <string name="calculator_no_rates">Todavía no hay tasas. Revisa tu conexión e inténtalo de nuevo.</string>
+    <string name="calculator_stale">No se pudo actualizar. Usando las tasas de %s.</string>
+    <string name="calculator_copied">Copiado</string>
+    <string name="calculator_copy_hint">Toca un resultado para copiarlo.</string>
+
+    <!-- In-app update -->
+    <string name="update_title">Actualización disponible</string>
+    <string name="update_version">WidgetKit %s</string>
+    <string name="update_installed">Tienes la %s</string>
+    <string name="update_downloading_title">Descargando actualización</string>
+    <string name="update_connecting">Conectando…</string>
+    <string name="update_progress">%1$d%% · %2$s de %3$s</string>
+    <string name="update_installing_title">Lista para instalar</string>
+    <string name="update_installing">Abriendo el instalador…</string>
+    <string name="update_failed_title">No se pudo actualizar</string>
+    <string name="update_close">Cerrar</string>
+    <string name="update_retry">Reintentar</string>
+    <string name="update_accept">Actualizar</string>
+    <string name="update_later">Ahora no</string>
+    <string name="update_failed">No se pudo descargar la actualización. Revisa tu conexión e inténtalo de nuevo.</string>
+    <string name="update_failed_signature">No se puede actualizar sobre esta versión. Desinstala WidgetKit y luego instala la nueva versión.</string>
+    <string name="update_permission_title">Permitir instalar actualizaciones</string>
+    <string name="update_permission_message">Para instalar actualizaciones, permite que WidgetKit instale apps en la siguiente pantalla y luego vuelve.</string>
+    <string name="update_permission_open">Abrir ajustes</string>
+
+    <!-- UUID generator -->
+    <string name="uuid_widget_label">UUID</string>
+    <string name="uuid_widget_description">Un UUID listo para copiar, con un botón para generar otro.</string>
+    <string name="uuid_title">UUID V%d</string>
+    <string name="uuid_header_detail">· %s</string>
+    <string name="uuid_preview_detail">· Tiempo Unix, ordenable</string>
+    <string name="uuid_version">Versión</string>
+    <string name="uuid_version_label">v%1$d · %2$s</string>
+    <string name="uuid_v1">Basado en tiempo</string>
+    <string name="uuid_v4">Aleatorio</string>
+    <string name="uuid_v6">Basado en tiempo, ordenable</string>
+    <string name="uuid_v7">Tiempo Unix, ordenable</string>
+    <string name="uuid_generate">Generar</string>
+    <string name="uuid_copy">Copiar</string>
+    <string name="uuid_copied">Copiado ✓</string>
+    <string name="settings_section_uuid">GENERADOR DE UUID</string>
+    <string name="settings_uuid_footer">Compartido con el widget de UUID: un UUID nuevo aquí también aparece en tu pantalla de inicio.</string>
+
+    <!-- Color picker -->
+    <string name="color_picker_tile_label">Selector de color</string>
+    <string name="color_picker_magnifier">Lupa del selector de color</string>
+    <string name="color_picker_channel">Selector de color</string>
+    <string name="color_picker_notification_title">El selector de color está activo</string>
+    <string name="color_picker_notification_text">Arrastra la lupa para elegir un color.</string>
+    <string name="color_picker_stop">Detener</string>
+    <string name="color_picker_copy">%s · Copiar</string>
+    <string name="color_picker_copied">%s copiado</string>
+    <string name="color_picker_copied_button">%s · Copiado ✓</string>
+    <string name="color_picker_overlay_needed">Permite que WidgetKit se muestre sobre otras apps y luego vuelve a activar el selector de color.</string>
+    <string name="settings_section_tools">HERRAMIENTAS</string>
+    <string name="settings_color_picker_add">Agregar el selector de color a Ajustes rápidos</string>
+    <string name="settings_color_picker_manual">Abre Ajustes rápidos, toca el botón de editar (lápiz) y arrastra «Selector de color».</string>
+    <string name="settings_tools_footer">Actívalo desde Ajustes rápidos para mostrar una lupa sobre cualquier app. Arrástrala, suéltala y toca Copiar.</string>
+
+    <!-- Settings app -->
+    <string name="settings_title">Widgets</string>
+    <string name="settings_version">WidgetKit %1$s (%2$d)</string>
+    <string name="settings_share_version">Compartir enlace de descarga</string>
+    <string name="settings_share_text">WidgetKit %1$s para Android: %2$s</string>
+    <string name="settings_section_global">GLOBAL</string>
+    <string name="settings_global_footer">Los widgets usan este esquema de colores, a menos que elijan uno propio.</string>
+    <string name="settings_section_widgets">WIDGETS</string>
+    <string name="settings_color_scheme">Esquema de colores</string>
+    <string name="settings_sources">Fuentes</string>
+    <string name="settings_add_to_home">Agregar a la pantalla de inicio</string>
+    <string name="scheme_follow_global">Global · %s</string>
+    <string name="scheme_use_global">Usar el global (%s)</string>
+    <string name="settings_section_credits">CRÉDITOS</string>
+    <string name="settings_credits_footer">Los esquemas de colores provienen de estos temas de Neovim. Tasas de cambio de ve.dolarapi.com.</string>
+    <string name="settings_access_granted">Mostrando eventos de tus calendarios</string>
+    <string name="settings_access_missing">Permite el acceso para mostrar los eventos de hoy</string>
+    <string name="settings_access_allow">Permitir</string>
+    <string name="settings_access_open_settings">Ajustes</string>
+    <string name="settings_add_widget_manual">Mantén presionada tu pantalla de inicio, toca Widgets y busca WidgetKit.</string>
+    <string name="settings_show_change">Mostrar variación</string>
+    <string name="settings_show_change_hint">Diferencia con el valor anterior de cada tasa.</string>
+    <string name="sources_both">Oficial y Paralelo</string>
+    <string name="sources_oficial">Oficial</string>
+    <string name="sources_paralelo">Paralelo</string>
+</resources>

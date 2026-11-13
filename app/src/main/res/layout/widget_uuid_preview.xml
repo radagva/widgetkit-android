@@ -55,7 +55,7 @@
                 android:ellipsize="end"
                 android:includeFontPadding="false"
                 android:maxLines="1"
-                android:text="· Unix time, sortable"
+                android:text="@string/uuid_preview_detail"
                 android:textColor="@color/widget_secondary_label"
                 android:textSize="11sp" />
 

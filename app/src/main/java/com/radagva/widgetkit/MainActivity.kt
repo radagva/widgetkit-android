@@ -21,18 +21,17 @@ import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.RemoteViews
-import android.widget.ScrollView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.pm.PackageInfoCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
 import com.google.android.material.button.MaterialButton
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.switchmaterial.SwitchMaterial
 import com.radagva.widgetkit.calendar.CalendarEventsRepository
 import com.radagva.widgetkit.colorpicker.ColorPickerTileService
@@ -607,7 +606,10 @@ class MainActivity : AppCompatActivity() {
 
     // ───────────── Picker dialog ─────────────
 
-    /** iOS-style single-choice dialog: [swatch]  Label  ✓ */
+    /**
+     * Single-choice bottom sheet (same style as the update sheet): drag handle, title, then
+     * rows of [swatch]  Label  ✓. Tapping a row picks it and closes the sheet.
+     */
     private fun <T> pick(
         title: Int,
         options: List<Pair<T, String>>,
@@ -615,28 +617,50 @@ class MainActivity : AppCompatActivity() {
         swatch: ((T) -> ColorScheme)? = null,
         onPick: (T) -> Unit,
     ) {
-        lateinit var dialog: AlertDialog
-        val list = LinearLayout(this).apply {
-            orientation = LinearLayout.VERTICAL
-            setPadding(0, dp(8), 0, dp(8))
-        }
+        val sheet = BottomSheetDialog(this)
+        val content = layoutInflater.inflate(R.layout.sheet_picker, null)
+        content.findViewById<TextView>(R.id.picker_title).setText(title)
+        val list = content.findViewById<LinearLayout>(R.id.picker_list)
+        val scroll = content.findViewById<View>(R.id.picker_scroll)
+
+        var selectedRow: View? = null
         options.forEach { (value, text) ->
+            val isSelected = value == selected
             val row = listRow {
-                dialog.dismiss()
-                if (value != selected) onPick(value)
+                sheet.dismiss()
+                if (!isSelected) onPick(value)
+            }.apply {
+                minimumHeight = dp(56)
+                // Rounded highlight behind the current choice.
+                if (isSelected) {
+                    background = GradientDrawable().apply {
+                        cornerRadius = dp(14).toFloat()
+                        setColor(getColor(R.color.app_separator) and 0x66FFFFFF)
+                    }
+                }
             }
             swatch?.let { row.addView(schemeSwatch(it(value))) }
-            row.addView(label(text).apply {
-                layoutParams = LinearLayout.LayoutParams(0, WRAP, 1f).apply { if (swatch != null) marginStart = dp(12) }
+            row.addView(label(text, bold = isSelected).apply {
+                layoutParams = LinearLayout.LayoutParams(0, WRAP, 1f).apply { if (swatch != null) marginStart = dp(14) }
             })
-            row.addView(checkMark().apply { visibility = if (value == selected) View.VISIBLE else View.INVISIBLE })
-            list.addView(row)
+            row.addView(checkMark().apply { visibility = if (isSelected) View.VISIBLE else View.INVISIBLE })
+            list.addView(row, LinearLayout.LayoutParams(MATCH, WRAP).apply { bottomMargin = dp(2) })
+            if (isSelected) selectedRow = row
         }
-        dialog = MaterialAlertDialogBuilder(this)
-            .setTitle(title)
-            .setView(ScrollView(this).apply { addView(list) })
-            .setNegativeButton(android.R.string.cancel, null)
-            .show()
+
+        sheet.setContentView(content)
+        sheet.setOnShowListener {
+            sheet.findViewById<FrameLayout>(com.google.android.material.R.id.design_bottom_sheet)?.let {
+                it.setBackgroundColor(android.graphics.Color.TRANSPARENT) // show our rounded background
+                BottomSheetBehavior.from(it).apply {
+                    skipCollapsed = true
+                    state = BottomSheetBehavior.STATE_EXPANDED
+                }
+            }
+            // Long lists (14 color schemes): start with the current choice in view.
+            selectedRow?.let { row -> scroll.post { scroll.scrollTo(0, (row.top - dp(56)).coerceAtLeast(0)) } }
+        }
+        sheet.show()
     }
 
     // ───────────── Row building blocks ─────────────

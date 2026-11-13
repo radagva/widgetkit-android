@@ -58,7 +58,7 @@ class MagnifierView(context: Context) : View(context) {
     private val lensClip = Path()
 
     init {
-        contentDescription = "Color picker magnifier"
+        contentDescription = context.getString(com.radagva.widgetkit.R.string.color_picker_magnifier)
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {

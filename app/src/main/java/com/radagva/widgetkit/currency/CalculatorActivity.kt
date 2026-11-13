@@ -102,7 +102,7 @@ class CalculatorActivity : AppCompatActivity() {
             val converted = amount?.multiply(BigDecimal.valueOf(value))
             val text = converted?.let { getString(R.string.currency_bolivares, format.format(it)) } ?: "—"
             results.addView(resultRow(
-                label = rate.source.replaceFirstChar { it.titlecase(locale) },
+                label = CurrencyFormat.sourceLabel(this, rate.source, locale),
                 rate = getString(
                     R.string.calculator_rate,
                     currency.name,

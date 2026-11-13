@@ -70,6 +70,7 @@
     <string name="uuid_widget_description">A UUID ready to copy, with a button for a new one.</string>
     <string name="uuid_title">UUID V%d</string>
     <string name="uuid_header_detail">· %s</string>
+    <string name="uuid_preview_detail">· Unix time, sortable</string>
     <string name="uuid_version">Version</string>
     <string name="uuid_version_label">v%1$d · %2$s</string>
     <string name="uuid_v1">Time-based</string>
@@ -84,6 +85,7 @@
 
     <!-- Color picker -->
     <string name="color_picker_tile_label">Color picker</string>
+    <string name="color_picker_magnifier">Color picker magnifier</string>
     <string name="color_picker_channel">Color picker</string>
     <string name="color_picker_notification_title">Color picker is on</string>
     <string name="color_picker_notification_text">Drag the magnifier to pick a color.</string>
@@ -119,7 +121,7 @@
     <string name="settings_add_widget_manual">Long-press your home screen, tap Widgets, then find WidgetKit.</string>
     <string name="settings_show_change">Show change</string>
     <string name="settings_show_change_hint">Difference from each rate\'s previous value.</string>
-    <string name="sources_both">Oficial &amp; Paralelo</string>
-    <string name="sources_oficial">Oficial</string>
-    <string name="sources_paralelo">Paralelo</string>
+    <string name="sources_both">Official &amp; Parallel</string>
+    <string name="sources_oficial">Official</string>
+    <string name="sources_paralelo">Parallel</string>
 </resources>

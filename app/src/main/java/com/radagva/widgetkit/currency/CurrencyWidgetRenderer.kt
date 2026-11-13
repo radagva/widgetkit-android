@@ -153,7 +153,7 @@ object CurrencyWidgetRenderer {
         val format = CurrencyFormat.amount(locale)
         fun money(value: Double) = context.getString(R.string.currency_bolivares, format.format(value))
 
-        row.setTextViewText(R.id.rate_label, rate.source.replaceFirstChar { it.titlecase(locale) })
+        row.setTextViewText(R.id.rate_label, CurrencyFormat.sourceLabel(context, rate.source, locale))
         row.setTextViewText(R.id.rate_value, rate.value?.let(::money) ?: "—")
         theme.textColor(row, R.id.rate_label) { it.secondaryLabel }
         theme.textColor(row, R.id.rate_value) { it.label }

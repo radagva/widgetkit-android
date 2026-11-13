@@ -11,6 +11,14 @@ object CurrencyFormat {
 
     private val ISO_PATTERNS = listOf("yyyy-MM-dd'T'HH:mm:ss.SSSXXX", "yyyy-MM-dd'T'HH:mm:ssXXX")
 
+    /** Localized name of a dolarapi source; unknown sources are shown as the API sends them. */
+    fun sourceLabel(context: Context, source: String, locale: Locale = Locale.getDefault()): String =
+        when (source.lowercase(Locale.ROOT)) {
+            "oficial" -> context.getString(com.radagva.widgetkit.R.string.sources_oficial)
+            "paralelo" -> context.getString(com.radagva.widgetkit.R.string.sources_paralelo)
+            else -> source.replaceFirstChar { it.titlecase(locale) }
+        }
+
     /** Two-decimal number format for the given locale. */
     fun amount(locale: Locale = Locale.getDefault()): NumberFormat =
         NumberFormat.getNumberInstance(locale).apply {

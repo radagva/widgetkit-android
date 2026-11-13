@@ -13,6 +13,7 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PROJECTION" />
 
     <application
+        android:name=".WidgetKitApp"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -102,6 +103,15 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/uuid_widget_info" />
         </receiver>
+
+        <!-- Runs the UUID widget's buttons (no UI; see UuidActionActivity). -->
+        <activity
+            android:name=".uuid.UuidActionActivity"
+            android:excludeFromRecents="true"
+            android:exported="false"
+            android:noHistory="true"
+            android:taskAffinity=""
+            android:theme="@android:style/Theme.NoDisplay" />
 
         <!-- Floating color picker (Quick Settings tile) -->
         <service

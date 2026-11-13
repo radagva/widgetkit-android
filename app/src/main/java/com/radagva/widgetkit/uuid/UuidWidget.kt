@@ -98,10 +98,13 @@ object UuidWidgets {
             theme.textColor(views, R.id.uuid_status) { it.secondaryLabel }
         }
 
-        views.setOnClickPendingIntent(R.id.uuid_generate, broadcast(context, UuidWidgetProvider.ACTION_GENERATE, 1))
-        views.setOnClickPendingIntent(R.id.uuid_copy, broadcast(context, UuidWidgetProvider.ACTION_COPY, 2))
+        // Buttons open an invisible activity rather than sending a broadcast: some vendors (Xiaomi)
+        // block broadcasts to a stopped app, which made these buttons do nothing.
+        views.setOnClickPendingIntent(R.id.uuid_generate, action(context, UuidActionActivity.ACTION_GENERATE, 1))
+        views.setOnClickPendingIntent(R.id.uuid_copy, action(context, UuidActionActivity.ACTION_COPY, 2))
+        // Only the UUID text opens the app, so it never overlaps the buttons.
         views.setOnClickPendingIntent(
-            R.id.uuid_content,
+            R.id.uuid_value,
             PendingIntent.getActivity(
                 context,
                 3,
@@ -121,11 +124,11 @@ object UuidWidgets {
         }
     }
 
-    private fun broadcast(context: Context, action: String, requestCode: Int): PendingIntent =
-        PendingIntent.getBroadcast(
+    private fun action(context: Context, action: String, requestCode: Int): PendingIntent =
+        PendingIntent.getActivity(
             context,
             requestCode,
-            Intent(context, UuidWidgetProvider::class.java).setAction(action),
+            UuidActionActivity.intent(context, action),
             PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
         )
 }

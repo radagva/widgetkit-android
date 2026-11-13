@@ -58,6 +58,21 @@
     <string name="update_permission_message">To install updates, allow WidgetKit to install apps in the next screen, then come back.</string>
     <string name="update_permission_open">Open settings</string>
 
+    <!-- Color picker -->
+    <string name="color_picker_tile_label">Color picker</string>
+    <string name="color_picker_channel">Color picker</string>
+    <string name="color_picker_notification_title">Color picker is on</string>
+    <string name="color_picker_notification_text">Drag the magnifier to pick a color.</string>
+    <string name="color_picker_stop">Stop</string>
+    <string name="color_picker_copy">%s · Copy</string>
+    <string name="color_picker_copied">Copied %s</string>
+    <string name="color_picker_copied_button">%s · Copied ✓</string>
+    <string name="color_picker_overlay_needed">Allow WidgetKit to display over other apps, then turn the color picker on again.</string>
+    <string name="settings_section_tools">TOOLS</string>
+    <string name="settings_color_picker_add">Add color picker to Quick Settings</string>
+    <string name="settings_color_picker_manual">Open Quick Settings, tap the edit (pencil) button and drag "Color picker" in.</string>
+    <string name="settings_tools_footer">Toggle it from Quick Settings to float a magnifier over any app. Drag it, let go, and tap Copy.</string>
+
     <!-- Settings app -->
     <string name="settings_title">Widgets</string>
     <string name="settings_version">WidgetKit %1$s (%2$d)</string>

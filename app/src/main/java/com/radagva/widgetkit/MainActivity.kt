@@ -34,6 +34,7 @@ import androidx.core.view.updatePadding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.switchmaterial.SwitchMaterial
 import com.radagva.widgetkit.calendar.CalendarEventsRepository
+import com.radagva.widgetkit.colorpicker.ColorPickerTileService
 import com.radagva.widgetkit.calendar.CalendarWidgetProvider
 import com.radagva.widgetkit.calendar.CalendarWidgetRenderer
 import com.radagva.widgetkit.currency.Currency
@@ -96,6 +97,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         buildGlobal()
+        buildTools()
         buildAccordion()
         buildCredits()
         showAppVersion()
@@ -143,6 +145,35 @@ class MainActivity : AppCompatActivity() {
                 expanded?.let(::rebuildBody)
             }
         })
+    }
+
+    // ───────────── Tools ─────────────
+
+    private fun buildTools() {
+        val list = findViewById<LinearLayout>(R.id.tools_list)
+        list.removeAllViews()
+        val row = listRow { addColorPickerTile() }
+        row.addView(ImageView(this).apply {
+            setImageResource(R.drawable.ic_tile_color_picker)
+            imageTintList = ColorStateList.valueOf(getColor(R.color.app_tint))
+            layoutParams = LinearLayout.LayoutParams(dp(24), dp(24)).apply { marginEnd = dp(12) }
+        })
+        row.addView(label(getString(R.string.settings_color_picker_add), color = R.color.app_tint))
+        list.addView(row)
+    }
+
+    /** Android 13+ can add the tile with one tap; older versions need the Quick Settings editor. */
+    private fun addColorPickerTile() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            getSystemService(android.app.StatusBarManager::class.java).requestAddTileService(
+                ComponentName(this, ColorPickerTileService::class.java),
+                getString(R.string.color_picker_tile_label),
+                android.graphics.drawable.Icon.createWithResource(this, R.drawable.ic_tile_color_picker),
+                mainExecutor,
+            ) { }
+        } else {
+            Toast.makeText(this, R.string.settings_color_picker_manual, Toast.LENGTH_LONG).show()
+        }
     }
 
     // ───────────── Accordion ─────────────

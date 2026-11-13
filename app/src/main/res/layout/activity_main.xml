@@ -39,6 +39,19 @@
             style="@style/SettingsFooter"
             android:text="@string/settings_global_footer" />
 
+        <!-- Tools -->
+        <TextView
+            style="@style/SettingsSectionHeader"
+            android:text="@string/settings_section_tools" />
+
+        <LinearLayout
+            android:id="@+id/tools_list"
+            style="@style/SettingsList" />
+
+        <TextView
+            style="@style/SettingsFooter"
+            android:text="@string/settings_tools_footer" />
+
         <!-- Widgets: accordion, one open at a time -->
         <TextView
             style="@style/SettingsSectionHeader"

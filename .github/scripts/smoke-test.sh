@@ -22,6 +22,8 @@ adb shell am broadcast -a "$pkg.calendar.REFRESH" -n "$pkg/.calendar.CalendarWid
 for receiver in .currency.DollarWidgetProvider .currency.EuroWidgetProvider .currency.DollarEuroWidgetProvider; do
   adb shell am broadcast -a "$pkg.currency.REFRESH" -n "$pkg/$receiver" >/dev/null
 done
+adb shell am broadcast -a "$pkg.uuid.GENERATE" -n "$pkg/.uuid.UuidWidgetProvider" >/dev/null
+adb shell am broadcast -a "$pkg.uuid.COPY" -n "$pkg/.uuid.UuidWidgetProvider" >/dev/null
 sleep 10
 
 crashes="$(adb logcat -d -b crash || true)"

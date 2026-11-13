@@ -52,6 +52,19 @@
             style="@style/SettingsFooter"
             android:text="@string/settings_tools_footer" />
 
+        <!-- UUID generator (shared with the UUID widget) -->
+        <TextView
+            style="@style/SettingsSectionHeader"
+            android:text="@string/settings_section_uuid" />
+
+        <LinearLayout
+            android:id="@+id/uuid_list"
+            style="@style/SettingsList" />
+
+        <TextView
+            style="@style/SettingsFooter"
+            android:text="@string/settings_uuid_footer" />
+
         <!-- Widgets: accordion, one open at a time -->
         <TextView
             style="@style/SettingsSectionHeader"

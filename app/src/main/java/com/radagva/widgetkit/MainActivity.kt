@@ -31,6 +31,7 @@ import androidx.core.content.pm.PackageInfoCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.switchmaterial.SwitchMaterial
 import com.radagva.widgetkit.calendar.CalendarEventsRepository
@@ -47,6 +48,11 @@ import com.radagva.widgetkit.theme.ThemeFamily
 import com.radagva.widgetkit.theme.WidgetKind
 import com.radagva.widgetkit.theme.WidgetSettings
 import com.radagva.widgetkit.update.AppUpdater
+import com.radagva.widgetkit.uuid.UuidStore
+import com.radagva.widgetkit.uuid.UuidVersion
+import com.radagva.widgetkit.uuid.UuidWidgetProvider
+import com.radagva.widgetkit.uuid.UuidWidgets
+import com.radagva.widgetkit.uuid.description
 import com.radagva.widgetkit.update.UpdateChecker
 
 /**
@@ -74,8 +80,16 @@ class MainActivity : AppCompatActivity() {
 
     // A fetch stored new rates: redraw the open currency preview (called on the main thread).
     private val currencyListener = SharedPreferences.OnSharedPreferenceChangeListener { _, _ ->
-        expanded?.takeIf { it != WidgetKind.CALENDAR }?.let(::renderPreview)
+        expanded?.takeIf { it.isCurrency }?.let(::renderPreview)
     }
+
+    // The UUID changed (here or from the widget): refresh the section and the open preview.
+    private val uuidListener = SharedPreferences.OnSharedPreferenceChangeListener { _, _ ->
+        refreshUuid()
+        if (expanded == WidgetKind.UUID) renderPreview(WidgetKind.UUID)
+    }
+
+    private val WidgetKind.isCurrency get() = this == WidgetKind.USD || this == WidgetKind.EUR || this == WidgetKind.BOTH
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -98,6 +112,7 @@ class MainActivity : AppCompatActivity() {
 
         buildGlobal()
         buildTools()
+        buildUuid()
         buildAccordion()
         buildCredits()
         showAppVersion()
@@ -111,12 +126,15 @@ class MainActivity : AppCompatActivity() {
     override fun onStart() {
         super.onStart()
         CurrencyStore.prefs(this).registerOnSharedPreferenceChangeListener(currencyListener)
+        UuidStore.prefs(this).registerOnSharedPreferenceChangeListener(uuidListener)
+        refreshUuid()
         // Fresh rates every time the app is opened (also updates home-screen widgets).
         CurrencyWidgets.refresh(this, Currency.entries)
     }
 
     override fun onStop() {
         CurrencyStore.prefs(this).unregisterOnSharedPreferenceChangeListener(currencyListener)
+        UuidStore.prefs(this).unregisterOnSharedPreferenceChangeListener(uuidListener)
         super.onStop()
     }
 
@@ -141,6 +159,7 @@ class MainActivity : AppCompatActivity() {
                 WidgetSettings.setGlobalScheme(this, scheme)
                 updateAllWidgets()
                 buildGlobal()
+                refreshUuid()
                 WidgetKind.entries.forEach(::refreshSubtitle)
                 expanded?.let(::rebuildBody)
             }
@@ -175,6 +194,127 @@ class MainActivity : AppCompatActivity() {
             Toast.makeText(this, R.string.settings_color_picker_manual, Toast.LENGTH_LONG).show()
         }
     }
+
+    // ───────────── UUID generator ─────────────
+
+    private lateinit var uuidVersionValue: TextView
+    private lateinit var uuidValue: TextView
+    private lateinit var uuidCopy: MaterialButton
+
+    private fun buildUuid() {
+        val list = findViewById<LinearLayout>(R.id.uuid_list)
+        list.removeAllViews()
+
+        // Version dropdown.
+        val versionRow = listRow {}
+        versionRow.addView(label(getString(R.string.uuid_version)).apply { maxLines = 1 })
+        uuidVersionValue = label("", color = R.color.app_secondary_label).apply {
+            maxLines = 1
+            ellipsize = android.text.TextUtils.TruncateAt.END
+            gravity = Gravity.END
+            layoutParams = LinearLayout.LayoutParams(0, WRAP, 1f).apply { marginStart = dp(12) }
+        }
+        versionRow.addView(uuidVersionValue)
+        versionRow.addView(chevron().apply { rotation = 90f })
+        versionRow.setOnClickListener { showUuidVersions(versionRow) }
+        list.addView(versionRow)
+        list.addView(separator())
+
+        // Current UUID.
+        uuidValue = TextView(this).apply {
+            typeface = android.graphics.Typeface.MONOSPACE
+            textSize = 16f
+            setTextColor(getColor(R.color.app_label))
+            gravity = Gravity.CENTER
+            setTextIsSelectable(true)
+            setPadding(dp(16), dp(18), dp(16), dp(18))
+        }
+        list.addView(uuidValue)
+
+        // Generate (flat) + Copy (raised, global scheme).
+        val buttons = LinearLayout(this).apply {
+            orientation = LinearLayout.HORIZONTAL
+            setPadding(dp(12), 0, dp(12), dp(12))
+        }
+        val generate = MaterialButton(this, null, com.google.android.material.R.attr.borderlessButtonStyle).apply {
+            setText(R.string.uuid_generate)
+            styleSheetButton(this)
+            setTextColor(getColor(R.color.app_label))
+            rippleColor = ColorStateList.valueOf(getColor(R.color.app_separator))
+            setOnClickListener {
+                UuidStore.generate(this@MainActivity)
+                UuidWidgets.updateAll(this@MainActivity)
+            }
+        }
+        uuidCopy = MaterialButton(this).apply {
+            setText(R.string.uuid_copy)
+            styleSheetButton(this)
+            val palette = WidgetSettings.globalScheme(this@MainActivity).palette
+            backgroundTintList = ColorStateList.valueOf(palette.accent)
+            setTextColor(palette.onAccent)
+            setOnClickListener { copyUuid() }
+        }
+        buttons.addView(generate, LinearLayout.LayoutParams(0, dp(48), 1f).apply { marginEnd = dp(6) })
+        buttons.addView(uuidCopy, LinearLayout.LayoutParams(0, dp(48), 1f).apply { marginStart = dp(6) })
+        list.addView(buttons)
+        refreshUuid()
+    }
+
+    private fun styleSheetButton(button: MaterialButton) {
+        button.isAllCaps = false
+        button.letterSpacing = 0f
+        button.textSize = 16f
+        button.insetTop = 0
+        button.insetBottom = 0
+        button.cornerRadius = dp(12)
+    }
+
+    private fun refreshUuid() {
+        if (!::uuidValue.isInitialized) return
+        val state = UuidStore.state(this)
+        uuidVersionValue.text = versionLabel(state.version)
+        uuidValue.text = state.value
+        // The raised button follows the global scheme.
+        val palette = WidgetSettings.globalScheme(this).palette
+        uuidCopy.backgroundTintList = ColorStateList.valueOf(palette.accent)
+        uuidCopy.setTextColor(palette.onAccent)
+    }
+
+    private fun versionLabel(version: UuidVersion) =
+        getString(R.string.uuid_version_label, version.number, getString(version.description))
+
+    private fun showUuidVersions(anchor: View) {
+        val popup = android.widget.PopupMenu(this, anchor, Gravity.END)
+        UuidVersion.entries.forEachIndexed { index, version ->
+            popup.menu.add(0, index, index, versionLabel(version)).apply {
+                isCheckable = true
+                isChecked = version == UuidStore.state(this@MainActivity).version
+            }
+        }
+        popup.menu.setGroupCheckable(0, true, true)
+        popup.setOnMenuItemClickListener { item ->
+            val version = UuidVersion.entries[item.itemId]
+            if (version != UuidStore.state(this).version) {
+                UuidStore.generate(this, version)
+                UuidWidgets.updateAll(this)
+            }
+            true
+        }
+        popup.show()
+    }
+
+    private fun copyUuid() {
+        UuidWidgets.copy(this, UuidStore.state(this).value)
+        uuidCopy.performHapticFeedback(
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) android.view.HapticFeedbackConstants.CONFIRM
+            else android.view.HapticFeedbackConstants.VIRTUAL_KEY,
+        )
+        uuidCopy.setText(R.string.uuid_copied)
+        uuidCopy.removeCallbacks(restoreCopyLabel)
+        uuidCopy.postDelayed(restoreCopyLabel, 1_000)
+    }
+
+    private val restoreCopyLabel = Runnable { uuidCopy.setText(R.string.uuid_copy) }
 
     // ───────────── Accordion ─────────────
 
@@ -273,7 +413,7 @@ class MainActivity : AppCompatActivity() {
         if (kind == WidgetKind.CALENDAR) {
             body.addView(separator())
             body.addView(calendarAccessRow())
-        } else {
+        } else if (kind.isCurrency) {
             val options = CurrencyWidgetOptions.load(this, kind)
             body.addView(separator())
             body.addView(valueRow(getString(R.string.settings_sources), getString(options.sources.label)) {
@@ -319,6 +459,7 @@ class MainActivity : AppCompatActivity() {
             WidgetKind.CALENDAR -> MATCH to dp(160)
             WidgetKind.USD, WidgetKind.EUR -> dp(160) to dp(150)
             WidgetKind.BOTH -> MATCH to dp(150)
+            WidgetKind.UUID -> MATCH to dp(96)
         }
         val container = FrameLayout(this).apply {
             layoutParams = FrameLayout.LayoutParams(width, height, Gravity.CENTER_HORIZONTAL)
@@ -345,6 +486,7 @@ class MainActivity : AppCompatActivity() {
                     theme = WidgetSettings.theme(this, kind),
                 )
             }
+            WidgetKind.UUID -> UuidWidgets.render(this)
             else -> CurrencyWidgets.render(this, CurrencyWidgets.spec(kind))
         }
         show(container, views)
@@ -361,16 +503,25 @@ class MainActivity : AppCompatActivity() {
     // ───────────── Widgets on the home screen ─────────────
 
     private fun updateWidget(kind: WidgetKind) {
-        if (kind == WidgetKind.CALENDAR) CalendarWidgetProvider.updateAll(this) else CurrencyWidgets.updateAll(this)
+        when {
+            kind == WidgetKind.CALENDAR -> CalendarWidgetProvider.updateAll(this)
+            kind == WidgetKind.UUID -> UuidWidgets.updateAll(this)
+            else -> CurrencyWidgets.updateAll(this)
+        }
     }
 
     private fun updateAllWidgets() {
         CalendarWidgetProvider.updateAll(this)
         CurrencyWidgets.updateAll(this)
+        UuidWidgets.updateAll(this)
     }
 
     private fun providerOf(kind: WidgetKind): Class<out AppWidgetProvider> =
-        if (kind == WidgetKind.CALENDAR) CalendarWidgetProvider::class.java else CurrencyWidgets.spec(kind).provider
+        when (kind) {
+            WidgetKind.CALENDAR -> CalendarWidgetProvider::class.java
+            WidgetKind.UUID -> UuidWidgetProvider::class.java
+            else -> CurrencyWidgets.spec(kind).provider
+        }
 
     private fun pinWidget(kind: WidgetKind) {
         val manager = AppWidgetManager.getInstance(this)

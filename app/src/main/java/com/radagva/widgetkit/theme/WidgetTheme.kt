@@ -129,6 +129,7 @@ enum class WidgetKind(@StringRes val label: Int) {
     USD(R.string.currency_usd_widget_label),
     EUR(R.string.currency_eur_widget_label),
     BOTH(R.string.currency_both_widget_label),
+    UUID(R.string.uuid_widget_label),
 }
 
 /** Global color scheme plus optional per-widget overrides. */

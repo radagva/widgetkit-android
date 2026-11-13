@@ -65,6 +65,22 @@
     <string name="update_permission_message">To install updates, allow WidgetKit to install apps in the next screen, then come back.</string>
     <string name="update_permission_open">Open settings</string>
 
+    <!-- UUID generator -->
+    <string name="uuid_widget_label">UUID</string>
+    <string name="uuid_widget_description">A UUID ready to copy, with a button for a new one.</string>
+    <string name="uuid_title">UUID V%d</string>
+    <string name="uuid_version">Version</string>
+    <string name="uuid_version_label">v%1$d · %2$s</string>
+    <string name="uuid_v1">Time-based</string>
+    <string name="uuid_v4">Random</string>
+    <string name="uuid_v6">Time-based, sortable</string>
+    <string name="uuid_v7">Unix time, sortable</string>
+    <string name="uuid_generate">Generate</string>
+    <string name="uuid_copy">Copy</string>
+    <string name="uuid_copied">Copied ✓</string>
+    <string name="settings_section_uuid">UUID GENERATOR</string>
+    <string name="settings_uuid_footer">Shared with the UUID widget: a new UUID here also appears on your home screen.</string>
+
     <!-- Color picker -->
     <string name="color_picker_tile_label">Color picker</string>
     <string name="color_picker_channel">Color picker</string>

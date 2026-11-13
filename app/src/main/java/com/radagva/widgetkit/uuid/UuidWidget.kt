@@ -89,11 +89,12 @@ object UuidWidgets {
 
         views.setTextViewText(R.id.uuid_title, context.getString(R.string.uuid_title, state.version.number))
         views.setTextViewText(R.id.uuid_value, state.value)
+        // Next to the version in the header: the description, or "Copied ✓" right after copying.
         if (copied) {
-            views.setTextViewText(R.id.uuid_status, context.getString(R.string.uuid_copied))
+            views.setTextViewText(R.id.uuid_status, context.getString(R.string.uuid_header_detail, context.getString(R.string.uuid_copied)))
             theme.textColor(views, R.id.uuid_status) { it.positive }
         } else {
-            views.setTextViewText(R.id.uuid_status, context.getString(state.version.description))
+            views.setTextViewText(R.id.uuid_status, context.getString(R.string.uuid_header_detail, context.getString(state.version.description)))
             theme.textColor(views, R.id.uuid_status) { it.secondaryLabel }
         }
 

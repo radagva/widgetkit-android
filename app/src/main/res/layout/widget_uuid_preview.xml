@@ -36,14 +36,27 @@
             <TextView
                 android:id="@+id/uuid_title"
                 android:text="UUID V7"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:fontFamily="sans-serif-medium"
                 android:includeFontPadding="false"
                 android:letterSpacing="0.02"
                 android:maxLines="1"
                 android:textColor="@color/widget_accent"
+                android:textSize="11sp" />
+
+            <!-- " · Unix time, sortable", or " · Copied ✓" right after copying -->
+            <TextView
+                android:id="@+id/uuid_status"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:includeFontPadding="false"
+                android:maxLines="1"
+                android:text="· Unix time, sortable"
+                android:textColor="@color/widget_secondary_label"
                 android:textSize="11sp" />
 
             <ImageView
@@ -81,15 +94,5 @@
             android:textColor="@color/widget_label"
             android:textSize="14sp" />
 
-        <TextView
-            android:id="@+id/uuid_status"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:includeFontPadding="false"
-            android:maxLines="1"
-            android:text="@string/uuid_v7"
-            android:textColor="@color/widget_secondary_label"
-            android:textSize="10sp" />
     </LinearLayout>
 </FrameLayout>

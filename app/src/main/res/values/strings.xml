@@ -69,6 +69,7 @@
     <string name="uuid_widget_label">UUID</string>
     <string name="uuid_widget_description">A UUID ready to copy, with a button for a new one.</string>
     <string name="uuid_title">UUID V%d</string>
+    <string name="uuid_header_detail">· %s</string>
     <string name="uuid_version">Version</string>
     <string name="uuid_version_label">v%1$d · %2$s</string>
     <string name="uuid_v1">Time-based</string>

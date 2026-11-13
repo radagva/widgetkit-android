@@ -223,7 +223,12 @@ class MainActivity : AppCompatActivity() {
         // Current UUID.
         uuidValue = TextView(this).apply {
             typeface = android.graphics.Typeface.MONOSPACE
-            textSize = 16f
+            textSize = 14f
+            // One line: shrink a little further on narrow screens instead of wrapping.
+            maxLines = 1
+            androidx.core.widget.TextViewCompat.setAutoSizeTextTypeUniformWithConfiguration(
+                this, 10, 15, 1, android.util.TypedValue.COMPLEX_UNIT_SP,
+            )
             setTextColor(getColor(R.color.app_label))
             gravity = Gravity.CENTER
             setTextIsSelectable(true)

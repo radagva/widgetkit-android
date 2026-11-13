@@ -24,6 +24,8 @@ concurrency:
 jobs:
   release:
     runs-on: ubuntu-latest
+    # Signing secrets live in the "production" environment.
+    environment: production
     env:
       # The pushed tag, or the one typed in when dispatching manually.
       TAG: ${{ inputs.tag || github.ref_name }}
@@ -73,7 +75,7 @@ jobs:
           SIGNING_KEYSTORE_BASE64: ${{ secrets.SIGNING_KEYSTORE_BASE64 }}
         run: |
           if [ -z "$SIGNING_KEYSTORE_BASE64" ]; then
-            echo "::error::Missing SIGNING_KEYSTORE_BASE64 secret. See README / workflow docs to set up signing."
+            echo "::error::Missing SIGNING_KEYSTORE_BASE64 secret in the 'production' environment (Settings > Environments > production)."
             exit 1
           fi
           echo "$SIGNING_KEYSTORE_BASE64" | base64 --decode > "$RUNNER_TEMP/release.jks"

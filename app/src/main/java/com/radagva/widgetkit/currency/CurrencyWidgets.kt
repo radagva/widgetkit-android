@@ -3,6 +3,8 @@ package com.radagva.widgetkit.currency
 import android.appwidget.AppWidgetManager
 import android.content.ComponentName
 import android.content.Context
+import android.widget.RemoteViews
+import com.radagva.widgetkit.theme.WidgetKind
 import com.radagva.widgetkit.theme.WidgetSettings
 import java.util.concurrent.Executors
 
@@ -11,10 +13,28 @@ object CurrencyWidgets {
 
     const val ACTION_REFRESH = "com.radagva.widgetkit.currency.REFRESH"
 
-    val providers: List<Pair<Class<out CurrencyWidgetProvider>, List<Currency>>> = listOf(
-        DollarWidgetProvider::class.java to listOf(Currency.USD),
-        EuroWidgetProvider::class.java to listOf(Currency.EUR),
-        DollarEuroWidgetProvider::class.java to listOf(Currency.USD, Currency.EUR),
+    /** A currency widget: its provider, the currencies it shows (one column each), its settings key. */
+    data class Spec(
+        val provider: Class<out CurrencyWidgetProvider>,
+        val currencies: List<Currency>,
+        val kind: WidgetKind,
+    )
+
+    val specs: List<Spec> = listOf(
+        Spec(DollarWidgetProvider::class.java, listOf(Currency.USD), WidgetKind.USD),
+        Spec(EuroWidgetProvider::class.java, listOf(Currency.EUR), WidgetKind.EUR),
+        Spec(DollarEuroWidgetProvider::class.java, listOf(Currency.USD, Currency.EUR), WidgetKind.BOTH),
+    )
+
+    fun spec(kind: WidgetKind): Spec = specs.first { it.kind == kind }
+
+    /** Renders a currency widget with its own scheme and options (also used for app previews). */
+    fun render(context: Context, spec: Spec): RemoteViews = CurrencyWidgetRenderer.render(
+        context = context,
+        provider = spec.provider,
+        currencies = spec.currencies,
+        theme = WidgetSettings.theme(context, spec.kind),
+        options = CurrencyWidgetOptions.load(context, spec.kind),
     )
 
     private val executor = Executors.newCachedThreadPool()
@@ -22,11 +42,10 @@ object CurrencyWidgets {
     /** Redraws every currency widget from the stored state. */
     fun updateAll(context: Context) {
         val manager = AppWidgetManager.getInstance(context)
-        val theme = WidgetSettings.theme(context, WidgetSettings.CURRENCY)
-        providers.forEach { (provider, currencies) ->
-            val ids = manager.getAppWidgetIds(ComponentName(context, provider))
+        specs.forEach { spec ->
+            val ids = manager.getAppWidgetIds(ComponentName(context, spec.provider))
             if (ids.isEmpty()) return@forEach
-            val views = CurrencyWidgetRenderer.render(context, provider, currencies, theme)
+            val views = render(context, spec)
             ids.forEach { manager.updateAppWidget(it, views) }
         }
     }

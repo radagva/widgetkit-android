@@ -21,7 +21,7 @@ object CurrencyWidgetRenderer {
         currencies: List<Currency>,
         theme: WidgetTheme,
         states: Map<Currency, CurrencyState> = currencies.associateWith { CurrencyStore.state(context, it) },
-        options: CurrencyWidgetOptions = CurrencyWidgetOptions.load(context),
+        options: CurrencyWidgetOptions,
     ): RemoteViews {
         val root = RemoteViews(context.packageName, R.layout.widget_currency)
         theme.tint(root, R.id.widget_bg) { it.background }

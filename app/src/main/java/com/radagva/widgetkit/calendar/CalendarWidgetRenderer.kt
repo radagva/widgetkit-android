@@ -9,6 +9,7 @@ import android.text.format.DateUtils
 import android.view.View
 import android.widget.RemoteViews
 import com.radagva.widgetkit.R
+import com.radagva.widgetkit.theme.WidgetKind
 import com.radagva.widgetkit.theme.WidgetSettings
 import com.radagva.widgetkit.theme.WidgetTheme
 import java.text.SimpleDateFormat
@@ -27,7 +28,7 @@ object CalendarWidgetRenderer {
         monthOffset: Int,
         hasPermission: Boolean,
         events: List<CalendarEvent>,
-        theme: WidgetTheme = WidgetSettings.theme(context, WidgetSettings.CALENDAR),
+        theme: WidgetTheme = WidgetSettings.theme(context, WidgetKind.CALENDAR),
     ): RemoteViews {
         val views = RemoteViews(context.packageName, R.layout.widget_calendar)
         theme.tint(views, R.id.widget_bg) { it.background }

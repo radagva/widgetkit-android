@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <!-- Calendar widget defaults (Dark 2026); runtime colors come from ColorScheme -->
+    <color name="widget_background">#FF121314</color>
+    <color name="widget_label">#FFBBBEBF</color>
+    <color name="widget_secondary_label">#FF8C8C8C</color>
+    <color name="widget_accent">#FF3994BC</color>
+    <color name="widget_on_accent">#FFFFFFFF</color>
+
+    <!-- Settings app (iOS grouped style) -->
+    <color name="app_grouped_background">#FFF2F2F7</color>
+    <color name="app_card">#FFFFFFFF</color>
+    <color name="app_label">#FF000000</color>
+    <color name="app_secondary_label">#FF8E8E93</color>
+    <color name="app_tint">#FF007AFF</color>
+    <color name="app_separator">#FFC6C6C8</color>
+</resources>

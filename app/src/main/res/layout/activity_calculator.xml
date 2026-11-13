@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clipToPadding="false"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:paddingBottom="24dp">
+
+        <!-- iOS-style "‹ Widgets" back button -->
+        <LinearLayout
+            android:id="@+id/back"
+            android:layout_width="wrap_content"
+            android:layout_height="44dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingEnd="12dp">
+
+            <ImageView
+                android:layout_width="26dp"
+                android:layout_height="26dp"
+                android:importantForAccessibility="no"
+                android:src="@drawable/widget_chevron_left"
+                android:tint="@color/app_tint" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/calculator_back"
+                android:textColor="@color/app_tint"
+                android:textSize="17sp" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:textColor="@color/app_label"
+            android:textSize="34sp"
+            android:textStyle="bold" />
+
+        <TextView
+            style="@style/SettingsSectionHeader"
+            android:text="@string/calculator_section_amount" />
+
+        <LinearLayout
+            style="@style/SettingsCard"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingEnd="16dp">
+
+            <TextView
+                android:id="@+id/symbol"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/app_secondary_label"
+                android:textSize="28sp" />
+
+            <EditText
+                android:id="@+id/amount"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_weight="1"
+                android:background="@null"
+                android:digits="0123456789.,"
+                android:hint="@string/calculator_hint"
+                android:imeOptions="actionDone"
+                android:importantForAutofill="no"
+                android:inputType="numberDecimal"
+                android:maxLength="16"
+                android:textColor="@color/app_label"
+                android:textColorHint="@color/app_secondary_label"
+                android:textSize="28sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/code"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/app_secondary_label"
+                android:textSize="17sp" />
+        </LinearLayout>
+
+        <TextView
+            style="@style/SettingsSectionHeader"
+            android:text="@string/calculator_section_result" />
+
+        <LinearLayout
+            android:id="@+id/results"
+            style="@style/SettingsList" />
+
+        <TextView
+            android:id="@+id/updated"
+            style="@style/SettingsFooter" />
+
+        <TextView
+            style="@style/SettingsFooter"
+            android:layout_marginTop="4dp"
+            android:text="@string/calculator_copy_hint" />
+    </LinearLayout>
+</ScrollView>

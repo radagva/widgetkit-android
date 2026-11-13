@@ -1,0 +1,75 @@
+<resources>
+    <string name="app_name">WidgetKit</string>
+
+    <string name="calendar_widget_label">Calendar</string>
+    <string name="calendar_widget_description">This month and today\'s events at a glance.</string>
+    <string name="calendar_widget_no_events">No more events today</string>
+    <string name="calendar_widget_grant_access">Tap to allow calendar access</string>
+    <string name="calendar_widget_all_day">All-day</string>
+    <string name="calendar_widget_untitled">(No title)</string>
+    <string name="calendar_widget_previous_month">Previous month</string>
+    <string name="calendar_widget_next_month">Next month</string>
+    <plurals name="calendar_widget_more_events">
+        <item quantity="one">%d more event</item>
+        <item quantity="other">%d more events</item>
+    </plurals>
+
+    <!-- Currency widgets -->
+    <string name="currency_usd_widget_label">Dollar</string>
+    <string name="currency_eur_widget_label">Euro</string>
+    <string name="currency_both_widget_label">Dollar &amp; Euro</string>
+    <string name="currency_usd_widget_description">Official and parallel dollar rates.</string>
+    <string name="currency_eur_widget_description">Official and parallel euro rates.</string>
+    <string name="currency_both_widget_description">Dollar and euro rates side by side.</string>
+    <string name="currency_usd_title">DOLLAR</string>
+    <string name="currency_eur_title">EURO</string>
+    <string name="currency_bolivares">Bs. %s</string>
+    <string name="currency_buy_sell">Buy %1$s · Sell %2$s</string>
+    <string name="currency_updated">Updated %s</string>
+    <string name="currency_refresh">Refresh</string>
+    <string name="currency_retry">Retry</string>
+    <string name="currency_error_no_connection">No connection</string>
+    <string name="currency_error_not_available">Not available</string>
+    <string name="currency_error_parse">Couldn\'t read data</string>
+
+    <!-- Calculator -->
+    <string name="calculator_title_usd">Dollar</string>
+    <string name="calculator_title_eur">Euro</string>
+    <string name="calculator_back">Widgets</string>
+    <string name="calculator_hint">1</string>
+    <string name="calculator_section_amount">AMOUNT</string>
+    <string name="calculator_section_result">IN BOLÍVARES</string>
+    <string name="calculator_rate">1 %1$s = %2$s</string>
+    <string name="calculator_no_rates">No rates yet. Check your connection and try again.</string>
+    <string name="calculator_stale">Couldn\'t refresh. Using rates from %s.</string>
+    <string name="calculator_copied">Copied</string>
+    <string name="calculator_copy_hint">Tap a result to copy it.</string>
+
+    <!-- Settings app -->
+    <string name="settings_title">Widgets</string>
+    <string name="settings_section_calendar">CALENDAR WIDGET</string>
+    <string name="settings_section_scheme">COLOR SCHEME</string>
+    <string name="settings_section_access">CALENDAR ACCESS</string>
+    <string name="settings_access_granted">Showing events from your calendars</string>
+    <string name="settings_access_missing">Allow access to show today\'s events</string>
+    <string name="settings_access_allow">Allow</string>
+    <string name="settings_access_open_settings">Settings</string>
+    <string name="settings_add_widget_manual">Long-press your home screen, tap Widgets, then find WidgetKit.</string>
+    <string name="settings_section_currency">CURRENCY WIDGETS</string>
+    <string name="settings_section_sources">SOURCES</string>
+    <string name="settings_section_display">DISPLAY</string>
+    <string name="settings_show_change">Show change</string>
+    <string name="settings_show_change_hint">Difference from each rate\'s previous value.</string>
+    <string name="sources_both">Oficial &amp; Paralelo</string>
+    <string name="sources_oficial">Oficial</string>
+    <string name="sources_paralelo">Paralelo</string>
+    <string name="settings_add_calendar">Add Calendar widget</string>
+    <string name="settings_add_usd">Add Dollar widget</string>
+    <string name="settings_add_eur">Add Euro widget</string>
+    <string name="settings_add_both">Add Dollar &amp; Euro widget</string>
+    <string name="settings_footer_calendar">Applies to every calendar widget on your home screen.</string>
+    <string name="settings_footer_currency">Applies to all three currency widgets. Rates from ve.dolarapi.com.</string>
+
+    <string name="scheme_dark_2026">Dark 2026</string>
+    <string name="scheme_mochalate">Mochalate</string>
+</resources>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Settings app (iOS grouped style) -->
+    <color name="app_grouped_background">#FF000000</color>
+    <color name="app_card">#FF1C1C1E</color>
+    <color name="app_label">#FFFFFFFF</color>
+    <color name="app_secondary_label">#FF8E8E93</color>
+    <color name="app_tint">#FF0A84FF</color>
+    <color name="app_separator">#FF38383A</color>
+</resources>

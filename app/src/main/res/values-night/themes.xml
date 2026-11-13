@@ -1,0 +1,13 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <style name="Theme.WidgetKit" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/app_tint</item>
+        <item name="colorPrimaryVariant">@color/app_tint</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorSecondary">@color/app_tint</item>
+        <item name="colorOnSecondary">@color/white</item>
+        <item name="android:colorBackground">@color/app_grouped_background</item>
+        <item name="android:windowBackground">@color/app_grouped_background</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="27">false</item>
+    </style>
+</resources>

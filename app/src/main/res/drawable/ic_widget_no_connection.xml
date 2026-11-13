@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Wi-Fi arcs with a slash. White so it can be tinted at runtime. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <path
+        android:fillColor="#FFFFFFFF"
+        android:pathData="M12,17.5a1.5,1.5 0,1 0,0.001 0z" />
+    <path
+        android:pathData="M8.46,15.46A5,5 0,0 1,15.54 15.46M5.64,12.64A9,9 0,0 1,18.36 12.64M2.81,9.81A13,13 0,0 1,21.19 9.81"
+        android:strokeWidth="2"
+        android:strokeColor="#FFFFFFFF"
+        android:strokeLineCap="round" />
+    <path
+        android:pathData="M3.5,3.5L20.5,20.5"
+        android:strokeWidth="2"
+        android:strokeColor="#FFFFFFFF"
+        android:strokeLineCap="round" />
+</vector>

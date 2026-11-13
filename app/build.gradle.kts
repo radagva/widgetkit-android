@@ -2,6 +2,13 @@ plugins {
     alias(libs.plugins.android.application)
 }
 
+// CI passes these from the git tag (e.g. -PversionName=1.2.3 -PversionCode=10203).
+val appVersionName = providers.gradleProperty("versionName").getOrElse("1.0.0")
+val appVersionCode = providers.gradleProperty("versionCode").map(String::toInt).getOrElse(1)
+
+// Release signing comes from the environment (GitHub secrets in CI); unsigned when absent.
+val releaseKeystore = providers.environmentVariable("SIGNING_KEYSTORE_PATH").orNull
+
 android {
     namespace = "com.radagva.widgetkit"
     compileSdk {
@@ -12,14 +19,26 @@ android {
         applicationId = "com.radagva.widgetkit"
         minSdk = 24
         targetSdk = 37
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = appVersionCode
+        versionName = appVersionName
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    signingConfigs {
+        if (releaseKeystore != null) {
+            create("release") {
+                storeFile = file(releaseKeystore)
+                storePassword = providers.environmentVariable("SIGNING_STORE_PASSWORD").get()
+                keyAlias = providers.environmentVariable("SIGNING_KEY_ALIAS").get()
+                keyPassword = providers.environmentVariable("SIGNING_KEY_PASSWORD").get()
+            }
+        }
+    }
+
     buildTypes {
         release {
+            if (releaseKeystore != null) signingConfig = signingConfigs.getByName("release")
             optimization {
                 enable = true
                 packageScope = setOf("androidx.**", "kotlin.**", "kotlinx.**")

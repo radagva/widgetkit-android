@@ -21,6 +21,7 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.pm.PackageInfoCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
@@ -41,10 +42,12 @@ import com.radagva.widgetkit.currency.EuroWidgetProvider
 import com.radagva.widgetkit.theme.ColorScheme
 import com.radagva.widgetkit.theme.WidgetSettings
 import com.radagva.widgetkit.theme.WidgetTheme
+import com.radagva.widgetkit.update.AppUpdater
 
 /** Settings screen: one section per widget family, each with live previews and a color scheme. */
 class MainActivity : AppCompatActivity() {
 
+    private val updater = AppUpdater(this)
     private lateinit var calendarTheme: WidgetTheme
     private lateinit var currencyTheme: WidgetTheme
     private lateinit var currencyOptions: CurrencyWidgetOptions
@@ -65,6 +68,8 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        // Only on a fresh open (not on rotation / recreation).
+        if (savedInstanceState == null) updater.checkOnLaunch()
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.root)) { v, insets ->
             val bars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -75,6 +80,7 @@ class MainActivity : AppCompatActivity() {
         calendarTheme = WidgetSettings.theme(this, WidgetSettings.CALENDAR)
         currencyTheme = WidgetSettings.theme(this, WidgetSettings.CURRENCY)
         currencyOptions = CurrencyWidgetOptions.load(this)
+        showAppVersion()
         accessStatus = findViewById(R.id.access_status)
         accessButton = findViewById(R.id.access_button)
         accessButton.setOnClickListener { onAccessClicked() }
@@ -351,6 +357,12 @@ class MainActivity : AppCompatActivity() {
         val blocked = !granted && asked && !shouldShowRequestPermissionRationale(Manifest.permission.READ_CALENDAR)
         accessButton.tag = if (blocked) OPEN_SETTINGS else null
         accessButton.setText(if (blocked) R.string.settings_access_open_settings else R.string.settings_access_allow)
+    }
+
+    private fun showAppVersion() {
+        val info = packageManager.getPackageInfo(packageName, 0)
+        findViewById<TextView>(R.id.app_version).text =
+            getString(R.string.settings_version, info.versionName, PackageInfoCompat.getLongVersionCode(info))
     }
 
     private fun dp(value: Int) = (value * resources.displayMetrics.density).toInt()

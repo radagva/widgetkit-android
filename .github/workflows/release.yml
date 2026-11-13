@@ -1,40 +1,59 @@
 name: Release APK
 
-# Runs when a version tag (e.g. 1.2.3 or v1.2.3) is pushed. The tagged commit must be on main.
+# Runs when a version tag (e.g. 1.2.3 or v1.2.3) is pushed, or manually from the Actions tab
+# for an existing tag. The tagged commit must be on main.
 on:
   push:
     tags:
       - "[0-9]+.[0-9]+.[0-9]+"
       - "v[0-9]+.[0-9]+.[0-9]+"
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Existing tag to build and release (e.g. 1.1.0)"
+        required: true
+        type: string
 
 permissions:
   contents: write # create the GitHub release
 
 concurrency:
-  group: release-${{ github.ref }}
+  group: release-${{ inputs.tag || github.ref_name }}
   cancel-in-progress: false
 
 jobs:
   release:
     runs-on: ubuntu-latest
+    env:
+      # The pushed tag, or the one typed in when dispatching manually.
+      TAG: ${{ inputs.tag || github.ref_name }}
     steps:
+      - name: Validate tag
+        run: |
+          if ! [[ "$TAG" =~ ^v?[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "::error::'$TAG' is not a version tag like 1.2.3 or v1.2.3."
+            exit 1
+          fi
+
       - name: Check out
         uses: actions/checkout@v4
         with:
+          ref: refs/tags/${{ env.TAG }}
           fetch-depth: 0
 
       - name: Make sure the tag is on main
         run: |
           git fetch --no-tags origin main
-          if ! git merge-base --is-ancestor "$GITHUB_SHA" origin/main; then
-            echo "::error::Tag $GITHUB_REF_NAME points to a commit that is not on main."
+          commit="$(git rev-parse "refs/tags/$TAG^{commit}")"
+          if ! git merge-base --is-ancestor "$commit" origin/main; then
+            echo "::error::Tag $TAG points to a commit that is not on main."
             exit 1
           fi
 
       - name: Read version from tag
         id: version
         run: |
-          name="${GITHUB_REF_NAME#v}"
+          name="${TAG#v}"
           IFS=. read -r major minor patch <<< "$name"
           # 1.2.3 -> 10203 (minor and patch must stay below 100).
           echo "name=$name" >> "$GITHUB_OUTPUT"
@@ -81,15 +100,21 @@ jobs:
           cp "$apk" "$out"
           echo "file=$out" >> "$GITHUB_OUTPUT"
 
-      - name: Create GitHub release
+      - name: Create or update GitHub release
         env:
           GH_TOKEN: ${{ github.token }}
           VERSION_NAME: ${{ steps.version.outputs.name }}
           APK: ${{ steps.apk.outputs.file }}
         run: |
-          gh release create "$GITHUB_REF_NAME" "$APK" \
-            --title "WidgetKit $VERSION_NAME" \
-            --generate-notes \
-            --notes "## Install
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            # Re-run (e.g. manual dispatch): replace the APK on the existing release.
+            gh release upload "$TAG" "$APK" --clobber
+          else
+            gh release create "$TAG" "$APK" \
+              --verify-tag \
+              --title "WidgetKit $VERSION_NAME" \
+              --generate-notes \
+              --notes "## Install
           Download **$APK** below on your Android phone, open it and allow installing from this source when asked.
           Requires Android 7.0 or newer."
+          fi

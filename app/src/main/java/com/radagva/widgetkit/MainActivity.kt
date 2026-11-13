@@ -179,7 +179,10 @@ class MainActivity : AppCompatActivity() {
     private fun show(containerId: Int, views: RemoteViews) {
         val container = findViewById<FrameLayout>(containerId)
         container.removeAllViews()
-        container.addView(views.apply(this, container))
+        // Inflate with the application context: the activity's AppCompat inflater would swap in
+        // AppCompatImageView, whose setImageResource isn't allowed in RemoteViews (crashes the
+        // preview when a widget shows an error icon).
+        container.addView(views.apply(applicationContext, container))
     }
 
     // ───────────── Lists ─────────────

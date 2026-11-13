@@ -39,9 +39,11 @@ android {
     buildTypes {
         release {
             if (releaseKeystore != null) signingConfig = signingConfigs.getByName("release")
+            // Optimize the whole app. Restricting R8 to library packages (packageScope) produced
+            // an APK that crashed at startup with IllegalAccessError (kotlin.collections class
+            // extended across an optimized/unoptimized boundary).
             optimization {
                 enable = true
-                packageScope = setOf("androidx.**", "kotlin.**", "kotlinx.**")
             }
         }
     }

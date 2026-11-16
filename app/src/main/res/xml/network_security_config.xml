@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <!--
+    bcv.org.ve serves the wrong intermediate certificate, and Android doesn't fetch missing
+    intermediates, so its chain fails to verify. Trusting the correct intermediate (Sectigo
+    Public Server Authentication CA DV R36, from crt.sectigo.com) for that domain only lets the
+    chain complete; hostname and validity checks still apply.
+    -->
+    <domain-config>
+        <domain includeSubdomains="true">bcv.org.ve</domain>
+        <trust-anchors>
+            <certificates src="system" />
+            <certificates src="@raw/sectigo_dv_r36" />
+        </trust-anchors>
+    </domain-config>
+</network-security-config>

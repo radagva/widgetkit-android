@@ -16,6 +16,21 @@ object CurrencyParser {
         throw CurrencyParseException("Invalid JSON", e)
     }
 
+    /** Inverse of [parse]: the stored body keeps the dolarapi shape. */
+    fun serialize(rates: List<CurrencyRate>): String = JSONArray().apply {
+        rates.forEach { rate ->
+            put(
+                JSONObject()
+                    .put("fuente", rate.source)
+                    .put("nombre", rate.name)
+                    .put("compra", rate.buy ?: JSONObject.NULL)
+                    .put("venta", rate.sell ?: JSONObject.NULL)
+                    .put("promedio", rate.average ?: JSONObject.NULL)
+                    .put("fechaActualizacion", rate.updatedAt),
+            )
+        }
+    }.toString()
+
     private fun parseRate(o: JSONObject): CurrencyRate {
         val rate = CurrencyRate(
             source = o.getString("fuente"),

@@ -5,7 +5,7 @@ import androidx.annotation.StringRes
 import com.radagva.widgetkit.R
 import com.radagva.widgetkit.theme.WidgetKind
 
-/** Which dolarapi sources ("fuente") the currency widgets show. */
+/** Which rate sources ("fuente") the currency widgets show. */
 enum class RateSources(@StringRes val label: Int, private val source: String?) {
     BOTH(R.string.sources_both, null),
     OFICIAL(R.string.sources_oficial, "oficial"),

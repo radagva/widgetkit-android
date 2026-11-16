@@ -116,7 +116,7 @@
     <string name="scheme_follow_global">Global · %s</string>
     <string name="scheme_use_global">Usar el global (%s)</string>
     <string name="settings_section_credits">CRÉDITOS</string>
-    <string name="settings_credits_footer">Los esquemas de colores provienen de estos temas de Neovim. Tasas de cambio de ve.dolarapi.com.</string>
+    <string name="settings_credits_footer">Los esquemas de colores provienen de estos temas de Neovim. Tasas oficiales de bcv.org.ve; tasas paralelas de ve.dolarapi.com.</string>
     <string name="settings_access_granted">Mostrando eventos de tus calendarios</string>
     <string name="settings_access_missing">Permite el acceso para mostrar los eventos de hoy</string>
     <string name="settings_access_allow">Permitir</string>

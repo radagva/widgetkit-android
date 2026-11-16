@@ -5,17 +5,19 @@ import com.radagva.widgetkit.R
 
 enum class Currency(
     private val path: String,
+    /** Id of this currency's block on the bcv.org.ve home page. */
+    val bcvId: String,
     @StringRes val title: Int,
     @StringRes val calculatorTitle: Int,
     val symbol: String,
 ) {
-    USD("dolares", R.string.currency_usd_title, R.string.calculator_title_usd, "$"),
-    EUR("euros", R.string.currency_eur_title, R.string.calculator_title_eur, "€");
+    USD("dolares", "dolar", R.string.currency_usd_title, R.string.calculator_title_usd, "$"),
+    EUR("euros", "euro", R.string.currency_eur_title, R.string.calculator_title_eur, "€");
 
     val url: String get() = "https://ve.dolarapi.com/v1/$path"
 }
 
-/** One entry of the dolarapi response. compra/venta/promedio may be null. */
+/** One rate (oficial from bcv.org.ve, paralelo from dolarapi). compra/venta/promedio may be null. */
 data class CurrencyRate(
     val source: String, // fuente
     val name: String, // nombre

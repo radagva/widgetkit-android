@@ -12,7 +12,7 @@ import java.util.Locale
 /** Builds currency widgets: one column per currency, side by side like the calendar widget. */
 object CurrencyWidgetRenderer {
 
-    /** dolarapi returns two rates (oficial, paralelo) per currency. */
+    /** Two rates per currency: oficial (BCV) and paralelo (dolarapi). */
     private const val DEFAULT_SKELETON_ROWS = 2
 
     fun render(

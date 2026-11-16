@@ -113,7 +113,7 @@
     <string name="scheme_follow_global">Global · %s</string>
     <string name="scheme_use_global">Use global (%s)</string>
     <string name="settings_section_credits">CREDITS</string>
-    <string name="settings_credits_footer">Color schemes are ported from these Neovim themes. Exchange rates from ve.dolarapi.com.</string>
+    <string name="settings_credits_footer">Color schemes are ported from these Neovim themes. Official rates from bcv.org.ve; parallel rates from ve.dolarapi.com.</string>
     <string name="settings_access_granted">Showing events from your calendars</string>
     <string name="settings_access_missing">Allow access to show today\'s events</string>
     <string name="settings_access_allow">Allow</string>

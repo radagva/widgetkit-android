@@ -106,6 +106,15 @@
                 android:resource="@xml/uuid_widget_info" />
         </receiver>
 
+        <!-- Runs the currency widgets' refresh / retry buttons (no UI; see CurrencyRefreshActivity). -->
+        <activity
+            android:name=".currency.CurrencyRefreshActivity"
+            android:excludeFromRecents="true"
+            android:exported="false"
+            android:noHistory="true"
+            android:taskAffinity=""
+            android:theme="@android:style/Theme.NoDisplay" />
+
         <!-- Runs the UUID widget's buttons (no UI; see UuidActionActivity). -->
         <activity
             android:name=".uuid.UuidActionActivity"

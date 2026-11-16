@@ -11,8 +11,6 @@ import java.util.concurrent.Executors
 /** Coordinates fetching and redrawing for all three currency widgets. */
 object CurrencyWidgets {
 
-    const val ACTION_REFRESH = "com.radagva.widgetkit.currency.REFRESH"
-
     /** A currency widget: its provider, the currencies it shows (one column each), its settings key. */
     data class Spec(
         val provider: Class<out CurrencyWidgetProvider>,
@@ -31,7 +29,7 @@ object CurrencyWidgets {
     /** Renders a currency widget with its own scheme and options (also used for app previews). */
     fun render(context: Context, spec: Spec): RemoteViews = CurrencyWidgetRenderer.render(
         context = context,
-        provider = spec.provider,
+        kind = spec.kind,
         currencies = spec.currencies,
         theme = WidgetSettings.theme(context, spec.kind),
         options = CurrencyWidgetOptions.load(context, spec.kind),

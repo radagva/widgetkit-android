@@ -2,10 +2,10 @@ package com.radagva.widgetkit.currency
 
 import android.app.PendingIntent
 import android.content.Context
-import android.content.Intent
 import android.view.View
 import android.widget.RemoteViews
 import com.radagva.widgetkit.R
+import com.radagva.widgetkit.theme.WidgetKind
 import com.radagva.widgetkit.theme.WidgetTheme
 import java.util.Locale
 
@@ -17,7 +17,7 @@ object CurrencyWidgetRenderer {
 
     fun render(
         context: Context,
-        provider: Class<out CurrencyWidgetProvider>,
+        kind: WidgetKind,
         currencies: List<Currency>,
         theme: WidgetTheme,
         states: Map<Currency, CurrencyState> = currencies.associateWith { CurrencyStore.state(context, it) },
@@ -26,7 +26,7 @@ object CurrencyWidgetRenderer {
         val root = RemoteViews(context.packageName, R.layout.widget_currency)
         theme.tint(root, R.id.widget_bg) { it.background }
 
-        val refresh = refreshIntent(context, provider)
+        val refresh = CurrencyRefreshActivity.pendingIntent(context, kind)
         root.removeAllViews(R.id.columns)
         currencies.forEachIndexed { index, currency ->
             if (index > 0) root.addView(R.id.columns, RemoteViews(context.packageName, R.layout.widget_currency_gap))
@@ -190,12 +190,4 @@ object CurrencyWidgetRenderer {
         }
         return row
     }
-
-    private fun refreshIntent(context: Context, provider: Class<out CurrencyWidgetProvider>): PendingIntent =
-        PendingIntent.getBroadcast(
-            context,
-            0,
-            Intent(context, provider).setAction(CurrencyWidgets.ACTION_REFRESH),
-            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT,
-        )
 }
